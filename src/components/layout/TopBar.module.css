@@ -95,3 +95,21 @@
     width: 100%;
   }
 }
+
+.searchIcon {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.iconButton {
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+}

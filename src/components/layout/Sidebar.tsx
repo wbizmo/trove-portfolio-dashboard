@@ -9,7 +9,7 @@ type SidebarProps = {
 export function Sidebar({ isOpen }: SidebarProps) {
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      <p className={styles.logoText}>Trove</p>
+      <div className={styles.sidebarHeader}>\n        <p className={styles.logoText}>Trove</p>\n        <button className={styles.closeButton} type="button" aria-label="Close menu">×</button>\n      </div>
 
       <nav className={styles.nav} aria-label="Main navigation">
         {navItems.map((item) => (

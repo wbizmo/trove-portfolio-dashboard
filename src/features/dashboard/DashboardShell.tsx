@@ -51,7 +51,7 @@ export function DashboardShell() {
 
   return (
     <main className={styles.app}>
-      <Sidebar isOpen={menuOpen} />
+      <div onClick={() => setMenuOpen(false)}>\n        <Sidebar isOpen={menuOpen} />\n      </div>
 
       {menuOpen ? (
         <button
@@ -69,7 +69,7 @@ export function DashboardShell() {
           <section className={styles.topGrid}>
             <article className={styles.netWorthCard}>
               <div className={styles.cardTop}>
-                <p>Total Net Worth <span>ⓘ</span></p>
+                <p>Total Net Worth <span className={styles.infoIcon}>i</span></p>
                 <div className={styles.range}>
                   <button className={styles.rangeActive} type="button">1D</button>
                   <button type="button">1W</button>

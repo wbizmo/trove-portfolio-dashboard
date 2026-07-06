@@ -20,7 +20,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
 
       <div className={styles.actions}>
         <button className={styles.iconButton} type="button" aria-label="Notifications">
-          ♧
+          ◔
         </button>
         <span className={styles.profileIcon}>A</span>
       </div>
