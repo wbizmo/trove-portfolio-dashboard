@@ -51,7 +51,7 @@ export function DashboardShell() {
 
   return (
     <main className={styles.app}>
-      <div onClick={() => setMenuOpen(false)}>\n        <Sidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />\n      </div>
+      <div onClick={() => setMenuOpen(false)}>        <Sidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />      </div>
 
       {menuOpen ? (
         <button
