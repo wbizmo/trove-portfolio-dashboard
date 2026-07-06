@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 
-import { useAuth } from "../../context/useAuth";
+import { Sidebar } from "../../components/layout/Sidebar";
+import { TopBar } from "../../components/layout/TopBar";
 import { getDashboardData } from "../../services/portfolioService";
 import type { DashboardData } from "../../types/portfolio";
-import { formatCurrency, formatDate, formatPercent } from "../../utils/formatters";
+import { formatCurrency, formatPercent } from "../../utils/formatters";
 import styles from "./DashboardShell.module.css";
 
 export function DashboardShell() {
-  const { logout } = useAuth();
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [showBalance, setShowBalance] = useState(true);
   const [showExcluded, setShowExcluded] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -45,151 +46,138 @@ export function DashboardShell() {
     return <main className={styles.statePage}>{error || "Portfolio unavailable."}</main>;
   }
 
-  const { portfolio, computedSummary, allocation, excludedHoldings } = dashboard;
-  const isPositive = computedSummary.gainLoss >= 0;
+  const { computedSummary, allocation, excludedHoldings } = dashboard;
+  const gainClass = computedSummary.gainLoss >= 0 ? styles.positive : styles.negative;
 
   return (
     <main className={styles.app}>
-      <aside className={styles.sidebar}>
-        <div className={styles.brand}>
-          <div className={styles.logo}>T</div>
-          <strong>Trove</strong>
-        </div>
+      <Sidebar isOpen={menuOpen} />
 
-        <nav className={styles.nav}>
-          <span className={styles.navActive}>Dashboard</span>
-          <span>Portfolio</span>
-          <span>Orders</span>
-          <span>Settings</span>
-        </nav>
-      </aside>
+      {menuOpen ? (
+        <button
+          className={styles.scrim}
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setMenuOpen(false)}
+        />
+      ) : null}
 
-      <section className={styles.content}>
-        <header className={styles.topbar}>
-          <div>
-            <p className={styles.greeting}>Welcome back</p>
-            <h1>Dashboard</h1>
-            <p className={styles.meta}>
-              {portfolio.user.name} · {portfolio.user.accountId} · Updated{" "}
-              {formatDate(portfolio.user.lastUpdated)}
-            </p>
-          </div>
+      <section className={styles.main}>
+        <TopBar onMenuClick={() => setMenuOpen(true)} />
 
-          <div className={styles.actions}>
-            <label className={styles.search}>
-              <span>Search</span>
-              <input placeholder="Search" />
-            </label>
-
-            <button type="button" onClick={logout}>
-              Sign out
-            </button>
-          </div>
-        </header>
-
-        <section className={styles.heroGrid}>
-          <article className={styles.netCard}>
-            <div className={styles.cardTop}>
-              <p>Net worth</p>
-              <button type="button" onClick={() => setShowBalance((current) => !current)}>
-                {showBalance ? "Hide" : "Show"}
-              </button>
-            </div>
-
-            <h2>{showBalance ? formatCurrency(computedSummary.totalValue) : "••••••"}</h2>
-
-            <strong className={isPositive ? styles.good : styles.bad}>
-              {formatCurrency(computedSummary.gainLoss)}{" "}
-              ({formatPercent(computedSummary.gainLossPercent)})
-            </strong>
-
-            <p className={styles.note}>Total portfolio value computed from holdings.</p>
-          </article>
-
-          <article className={styles.allocationCard}>
-            <div className={styles.cardTop}>
-              <p>Allocation</p>
-              <span>By sector</span>
-            </div>
-
-            <div className={styles.allocationBar} aria-label="Portfolio allocation by sector">
-              {allocation.map((item, index) => (
-                <span
-                  key={item.sector}
-                  className={styles[`segment${index + 1}`]}
-                  style={{ width: `${item.percentage}%` }}
-                  title={`${item.sector}: ${item.percentage.toFixed(1)}%`}
-                />
-              ))}
-            </div>
-
-            <div className={styles.legend}>
-              {allocation.map((item, index) => (
-                <span key={item.sector}>
-                  <i className={styles[`dot${index + 1}`]} />
-                  {item.sector} {item.percentage.toFixed(1)}%
-                </span>
-              ))}
-            </div>
-
-            {excludedHoldings.length > 0 ? (
-              <div className={styles.exclusionBox}>
-                <button
-                  type="button"
-                  onClick={() => setShowExcluded((current) => !current)}
-                >
-                  {excludedHoldings.length} excluded from allocation{" "}
-                  <span>{showExcluded ? "Hide" : "View"}</span>
-                </button>
-
-                {showExcluded ? (
-                  <ul>
-                    {excludedHoldings.map((holding) => (
-                      <li key={holding.id}>
-                        <strong>{holding.ticker}</strong>
-                        <span>{holding.reason}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
+        <div className={styles.content}>
+          <section className={styles.topGrid}>
+            <article className={styles.netWorthCard}>
+              <div className={styles.cardTop}>
+                <p>Total Net Worth <span>ⓘ</span></p>
+                <div className={styles.range}>
+                  <button className={styles.rangeActive} type="button">1D</button>
+                  <button type="button">1W</button>
+                  <button type="button">1M</button>
+                  <button type="button">ALL</button>
+                </div>
               </div>
-            ) : null}
-          </article>
-        </section>
 
-        <section className={styles.accountGrid}>
-          {allocation.map((item) => (
-            <article key={item.sector}>
-              <span>{item.sector}</span>
-              <strong>{formatCurrency(item.value)}</strong>
-              <small>
-                {item.positions} {item.positions === 1 ? "position" : "positions"}
-              </small>
+              <div className={styles.valueRow}>
+                <h1>{showBalance ? formatCurrency(computedSummary.totalValue) : "••••••"}</h1>
+                <strong className={gainClass}>{formatPercent(computedSummary.gainLossPercent)}</strong>
+                <button
+                  className={styles.hideButton}
+                  type="button"
+                  onClick={() => setShowBalance((current) => !current)}
+                >
+                  {showBalance ? "Hide" : "Show"}
+                </button>
+              </div>
+
+              <div className={styles.fakeChart} aria-hidden="true">
+                <svg viewBox="0 0 520 170" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stopColor="#059A83" stopOpacity="0.24" />
+                      <stop offset="100%" stopColor="#059A83" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28" fill="none" stroke="#059A83" strokeWidth="4" />
+                  <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28 L520 170 L0 170 Z" fill="url(#chartFill)" />
+                </svg>
+              </div>
             </article>
-          ))}
-        </section>
 
-        <section className={styles.lowerGrid}>
-          <article className={styles.panel}>
-            <div className={styles.panelHead}>
-              <h2>Holdings</h2>
-              <span>Stocks</span>
-            </div>
-            <p className={styles.empty}>
-              Card-style stock holdings with search and sector filters come next.
-            </p>
-          </article>
+            <article className={styles.allocationCard}>
+              <h2>Asset Allocation</h2>
 
-          <article className={styles.panel}>
-            <div className={styles.panelHead}>
-              <h2>Recent transactions</h2>
-              <span>Orders</span>
-            </div>
-            <p className={styles.empty}>
-              Recent orders with Buy/Sell filters and status badges come next.
-            </p>
-          </article>
-        </section>
+              <div className={styles.allocationBar}>
+                {allocation.map((item, index) => (
+                  <span
+                    key={item.sector}
+                    className={styles[`segment${index + 1}`]}
+                    style={{ width: `${item.percentage}%` }}
+                    title={`${item.sector}: ${item.percentage.toFixed(1)}%`}
+                  />
+                ))}
+              </div>
+
+              <div className={styles.legend}>
+                {allocation.map((item, index) => (
+                  <span key={item.sector}>
+                    <i className={styles[`dot${index + 1}`]} />
+                    <b>{item.sector}</b>
+                    <strong>{item.percentage.toFixed(1)}%</strong>
+                  </span>
+                ))}
+              </div>
+
+              {excludedHoldings.length > 0 ? (
+                <div className={styles.exclusionBox}>
+                  <button type="button" onClick={() => setShowExcluded((current) => !current)}>
+                    {excludedHoldings.length} excluded from allocation
+                    <span>{showExcluded ? "Hide" : "View"}</span>
+                  </button>
+
+                  {showExcluded ? (
+                    <ul>
+                      {excludedHoldings.map((holding) => (
+                        <li key={holding.id}>
+                          <strong>{holding.ticker}</strong>
+                          <span>{holding.reason}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ) : null}
+            </article>
+          </section>
+
+          <section className={styles.accountGrid}>
+            {allocation.map((item) => (
+              <article key={item.sector}>
+                <p>{item.sector}</p>
+                <strong>{formatCurrency(item.value)}</strong>
+                <span>{item.positions} {item.positions === 1 ? "position" : "positions"}</span>
+              </article>
+            ))}
+          </section>
+
+          <section className={styles.lowerGrid}>
+            <article className={styles.panel}>
+              <div className={styles.panelHead}>
+                <h2>Holdings</h2>
+                <button type="button">View All</button>
+              </div>
+              <p className={styles.placeholder}>Stocks tab comes in Sprint 3.6B.</p>
+            </article>
+
+            <article className={styles.panel}>
+              <div className={styles.panelHead}>
+                <h2>Recent Transactions</h2>
+                <button type="button">View All</button>
+              </div>
+              <p className={styles.placeholder}>Orders tab comes in Sprint 3.6B.</p>
+            </article>
+          </section>
+        </div>
       </section>
     </main>
   );
