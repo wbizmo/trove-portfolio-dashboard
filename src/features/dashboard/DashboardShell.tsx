@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import styles from "./DashboardShell.module.css";
 
 export function DashboardShell() {

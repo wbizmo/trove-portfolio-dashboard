@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import styles from "./LoginPage.module.css";
 
 type LoginErrors = {

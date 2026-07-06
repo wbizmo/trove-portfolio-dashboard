@@ -1,13 +1,18 @@
-export default function App(){
-return(
-<div
-style={{
-padding:"40px"
-}}
->
-<h1>Trove Dashboard</h1>
+import { AuthProvider } from "./context/AuthProvider";
+import { useAuth } from "./context/useAuth";
+import { LoginPage } from "./features/auth/LoginPage";
+import { DashboardShell } from "./features/dashboard/DashboardShell";
 
-<p>Sprint 1 foundation complete.</p>
-</div>
-);
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? <DashboardShell /> : <LoginPage />;
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
 }
