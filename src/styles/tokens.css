@@ -1,0 +1,22 @@
+:root{
+--primary:#059A83;
+--success:#10AE17;
+--danger:#BF221C;
+
+--page:#F5F1EE;
+--canvas:#FBFBFB;
+--card:#FFFFFF;
+
+--text:#13342F;
+--text-muted:#687D7A;
+--border:#DBDFDF;
+
+--blue:#00B6DF;
+--purple:#7B79C9;
+--cream:#F2C891;
+
+--radius:16px;
+--pill:999px;
+
+--shadow:0 18px 40px rgba(19,52,47,.08);
+}
