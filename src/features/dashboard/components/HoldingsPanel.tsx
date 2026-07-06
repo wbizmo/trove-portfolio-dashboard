@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { getHoldingValue, getInvestedValue } from "../../../services/portfolioService";
 import type { Holding } from "../../../types/portfolio";
@@ -8,6 +8,8 @@ import styles from "./HoldingsPanel.module.css";
 type HoldingsPanelProps = {
   holdings: Holding[];
 };
+
+const ITEMS_PER_PAGE = 5;
 
 function getGainLoss(holding: Holding) {
   const currentValue = getHoldingValue(holding);
@@ -28,6 +30,7 @@ function getStatusText(holding: Holding) {
 export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
   const [query, setQuery] = useState("");
   const [sector, setSector] = useState("All");
+  const [page, setPage] = useState(1);
 
   const sectors = useMemo(() => {
     return ["All", ...Array.from(new Set(holdings.map((holding) => holding.sector))).sort()];
@@ -46,6 +49,16 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
       return matchesSearch && matchesSector;
     });
   }, [holdings, query, sector]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredHoldings.length / ITEMS_PER_PAGE));
+  const paginatedHoldings = filteredHoldings.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE,
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, sector]);
 
   return (
     <article className={styles.panel}>
@@ -87,8 +100,8 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
       </div>
 
       <div className={styles.list}>
-        {filteredHoldings.length > 0 ? (
-          filteredHoldings.map((holding) => {
+        {paginatedHoldings.length > 0 ? (
+          paginatedHoldings.map((holding) => {
             const gainLoss = getGainLoss(holding);
             const statusText = getStatusText(holding);
             const isPositive = gainLoss.amount >= 0;
@@ -128,6 +141,24 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
         ) : (
           <p className={styles.empty}>No holdings match this filter.</p>
         )}
+      </div>
+
+      <div className={styles.pagination}>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <div>
+          <button type="button" disabled={page === 1} onClick={() => setPage((current) => current - 1)}>
+            Prev
+          </button>
+          <button
+            type="button"
+            disabled={page === totalPages}
+            onClick={() => setPage((current) => current + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </article>
   );

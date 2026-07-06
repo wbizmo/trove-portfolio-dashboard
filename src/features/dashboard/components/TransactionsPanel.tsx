@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Transaction, TransactionType } from "../../../types/portfolio";
 import { formatCurrency, formatDate } from "../../../utils/formatters";
@@ -11,6 +11,7 @@ type TransactionsPanelProps = {
 };
 
 const filters: TransactionFilter[] = ["All", "BUY", "SELL"];
+const ITEMS_PER_PAGE = 5;
 
 function getStatusClass(status: Transaction["status"]) {
   if (status === "COMPLETED") return styles.completed;
@@ -20,11 +21,22 @@ function getStatusClass(status: Transaction["status"]) {
 
 export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
   const [filter, setFilter] = useState<TransactionFilter>("All");
+  const [page, setPage] = useState(1);
 
   const filteredTransactions = useMemo(() => {
     if (filter === "All") return transactions;
     return transactions.filter((transaction) => transaction.type === filter);
   }, [filter, transactions]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / ITEMS_PER_PAGE));
+  const paginatedTransactions = filteredTransactions.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE,
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
 
   return (
     <article className={styles.panel}>
@@ -49,8 +61,8 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
       </div>
 
       <div className={styles.list}>
-        {filteredTransactions.length > 0 ? (
-          filteredTransactions.map((transaction) => (
+        {paginatedTransactions.length > 0 ? (
+          paginatedTransactions.map((transaction) => (
             <article className={styles.order} key={transaction.id}>
               <span
                 className={`${styles.type} ${
@@ -79,6 +91,24 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
         ) : (
           <p className={styles.empty}>No transactions match this filter.</p>
         )}
+      </div>
+
+      <div className={styles.pagination}>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <div>
+          <button type="button" disabled={page === 1} onClick={() => setPage((current) => current - 1)}>
+            Prev
+          </button>
+          <button
+            type="button"
+            disabled={page === totalPages}
+            onClick={() => setPage((current) => current + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </article>
   );
