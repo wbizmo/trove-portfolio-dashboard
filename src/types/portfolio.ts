@@ -45,3 +45,32 @@ export interface PortfolioData {
   holdings: Holding[];
   transactions: Transaction[];
 }
+
+export interface PortfolioComputedSummary {
+  totalValue: number;
+  totalInvested: number;
+  gainLoss: number;
+  gainLossPercent: number;
+}
+
+export interface SectorAllocation {
+  sector: string;
+  value: number;
+  positions: number;
+  percentage: number;
+}
+
+export interface ExcludedHolding {
+  id: string;
+  ticker: string;
+  name: string;
+  sector: string;
+  reason: string;
+}
+
+export interface DashboardData {
+  portfolio: PortfolioData;
+  computedSummary: PortfolioComputedSummary;
+  allocation: SectorAllocation[];
+  excludedHoldings: ExcludedHolding[];
+}

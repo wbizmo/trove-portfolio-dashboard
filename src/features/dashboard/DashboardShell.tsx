@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 
 import { useAuth } from "../../context/useAuth";
-import { getComputedPortfolioSummary, getPortfolioData } from "../../services/portfolioService";
-import type { PortfolioData } from "../../types/portfolio";
+import { getDashboardData } from "../../services/portfolioService";
+import type { DashboardData } from "../../types/portfolio";
 import { formatCurrency, formatDate, formatPercent } from "../../utils/formatters";
 import styles from "./DashboardShell.module.css";
 
 export function DashboardShell() {
   const { logout } = useAuth();
-  const [portfolio, setPortfolio] = useState<PortfolioData | null>(null);
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [showBalance, setShowBalance] = useState(true);
+  const [showExcluded, setShowExcluded] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
-    async function loadPortfolio() {
+    async function loadDashboard() {
       try {
         setIsLoading(true);
         setError("");
-        const data = await getPortfolioData();
-        if (isMounted) setPortfolio(data);
+
+        const data = await getDashboardData();
+
+        if (isMounted) setDashboard(data);
       } catch {
         if (isMounted) setError("Unable to load portfolio data.");
       } finally {
@@ -29,28 +32,30 @@ export function DashboardShell() {
       }
     }
 
-    loadPortfolio();
+    loadDashboard();
 
     return () => {
       isMounted = false;
     };
   }, []);
 
-  if (isLoading) {
-    return <main className={styles.statePage}>Loading portfolio...</main>;
-  }
+  if (isLoading) return <main className={styles.statePage}>Loading portfolio...</main>;
 
-  if (error || !portfolio) {
+  if (error || !dashboard) {
     return <main className={styles.statePage}>{error || "Portfolio unavailable."}</main>;
   }
 
-  const summary = getComputedPortfolioSummary(portfolio.holdings);
-  const isPositive = summary.gainLoss >= 0;
+  const { portfolio, computedSummary, allocation, excludedHoldings } = dashboard;
+  const isPositive = computedSummary.gainLoss >= 0;
 
   return (
     <main className={styles.app}>
       <aside className={styles.sidebar}>
-        <div className={styles.logo}>T</div>
+        <div className={styles.brand}>
+          <div className={styles.logo}>T</div>
+          <strong>Trove</strong>
+        </div>
+
         <nav className={styles.nav}>
           <span className={styles.navActive}>Dashboard</span>
           <span>Portfolio</span>
@@ -62,19 +67,23 @@ export function DashboardShell() {
       <section className={styles.content}>
         <header className={styles.topbar}>
           <div>
-            <p className={styles.greeting}>Hello, {portfolio.user.name}</p>
-            <h1>Portfolio Overview</h1>
+            <p className={styles.greeting}>Welcome back</p>
+            <h1>Dashboard</h1>
             <p className={styles.meta}>
-              {portfolio.user.accountId} · Updated {formatDate(portfolio.user.lastUpdated)}
+              {portfolio.user.name} · {portfolio.user.accountId} · Updated{" "}
+              {formatDate(portfolio.user.lastUpdated)}
             </p>
           </div>
 
           <div className={styles.actions}>
             <label className={styles.search}>
               <span>Search</span>
-              <input placeholder="Search assets..." />
+              <input placeholder="Search" />
             </label>
-            <button type="button" onClick={logout}>Sign out</button>
+
+            <button type="button" onClick={logout}>
+              Sign out
+            </button>
           </div>
         </header>
 
@@ -86,11 +95,15 @@ export function DashboardShell() {
                 {showBalance ? "Hide" : "Show"}
               </button>
             </div>
-            <h2>{showBalance ? formatCurrency(summary.totalValue) : "••••••"}</h2>
+
+            <h2>{showBalance ? formatCurrency(computedSummary.totalValue) : "••••••"}</h2>
+
             <strong className={isPositive ? styles.good : styles.bad}>
-              {formatCurrency(summary.gainLoss)} ({formatPercent(summary.gainLossPercent)})
+              {formatCurrency(computedSummary.gainLoss)}{" "}
+              ({formatPercent(computedSummary.gainLossPercent)})
             </strong>
-            <p className={styles.note}>Computed from holdings through the portfolio service.</p>
+
+            <p className={styles.note}>Total portfolio value computed from holdings.</p>
           </article>
 
           <article className={styles.allocationCard}>
@@ -98,43 +111,83 @@ export function DashboardShell() {
               <p>Allocation</p>
               <span>By sector</span>
             </div>
-            <div className={styles.barSkeleton}>
-              <span />
-              <span />
-              <span />
-              <span />
+
+            <div className={styles.allocationBar} aria-label="Portfolio allocation by sector">
+              {allocation.map((item, index) => (
+                <span
+                  key={item.sector}
+                  className={styles[`segment${index + 1}`]}
+                  style={{ width: `${item.percentage}%` }}
+                  title={`${item.sector}: ${item.percentage.toFixed(1)}%`}
+                />
+              ))}
             </div>
+
             <div className={styles.legend}>
-              <span>Technology</span>
-              <span>Finance</span>
-              <span>Healthcare</span>
-              <span>Automotive</span>
+              {allocation.map((item, index) => (
+                <span key={item.sector}>
+                  <i className={styles[`dot${index + 1}`]} />
+                  {item.sector} {item.percentage.toFixed(1)}%
+                </span>
+              ))}
             </div>
+
+            {excludedHoldings.length > 0 ? (
+              <div className={styles.exclusionBox}>
+                <button
+                  type="button"
+                  onClick={() => setShowExcluded((current) => !current)}
+                >
+                  {excludedHoldings.length} excluded from allocation{" "}
+                  <span>{showExcluded ? "Hide" : "View"}</span>
+                </button>
+
+                {showExcluded ? (
+                  <ul>
+                    {excludedHoldings.map((holding) => (
+                      <li key={holding.id}>
+                        <strong>{holding.ticker}</strong>
+                        <span>{holding.reason}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
           </article>
         </section>
 
         <section className={styles.accountGrid}>
-          <article><span>Total Invested</span><strong>{formatCurrency(summary.totalInvested)}</strong></article>
-          <article><span>Holdings</span><strong>{portfolio.holdings.length}</strong></article>
-          <article><span>Orders</span><strong>{portfolio.transactions.length}</strong></article>
-          <article><span>Currency</span><strong>{portfolio.summary.currency}</strong></article>
+          {allocation.map((item) => (
+            <article key={item.sector}>
+              <span>{item.sector}</span>
+              <strong>{formatCurrency(item.value)}</strong>
+              <small>
+                {item.positions} {item.positions === 1 ? "position" : "positions"}
+              </small>
+            </article>
+          ))}
         </section>
 
         <section className={styles.lowerGrid}>
           <article className={styles.panel}>
             <div className={styles.panelHead}>
               <h2>Holdings</h2>
-              <span>Stocks tab coming next</span>
+              <span>Stocks</span>
             </div>
-            <p className={styles.empty}>Card-style stock holdings will be implemented in the next sprint.</p>
+            <p className={styles.empty}>
+              Card-style stock holdings with search and sector filters come next.
+            </p>
           </article>
 
           <article className={styles.panel}>
             <div className={styles.panelHead}>
               <h2>Recent transactions</h2>
-              <span>Orders tab coming next</span>
+              <span>Orders</span>
             </div>
-            <p className={styles.empty}>Recent buy/sell orders will be implemented after holdings.</p>
+            <p className={styles.empty}>
+              Recent orders with Buy/Sell filters and status badges come next.
+            </p>
           </article>
         </section>
       </section>
