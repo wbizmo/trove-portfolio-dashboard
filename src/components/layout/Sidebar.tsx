@@ -4,12 +4,27 @@ const navItems = ["Dashboard", "Portfolio", "Transactions", "Markets", "Settings
 
 type SidebarProps = {
   isOpen: boolean;
+  onClose: () => void;
 };
 
-export function Sidebar({ isOpen }: SidebarProps) {
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </svg>
+  );
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      <div className={styles.sidebarHeader}>\n        <p className={styles.logoText}>Trove</p>\n        <button className={styles.closeButton} type="button" aria-label="Close menu">×</button>\n      </div>
+      <div className={styles.sidebarHeader}>
+        <p className={styles.logoText}>Trove</p>
+        <button className={styles.closeButton} type="button" onClick={onClose} aria-label="Close menu">
+          <CloseIcon />
+        </button>
+      </div>
 
       <nav className={styles.nav} aria-label="Main navigation">
         {navItems.map((item) => (

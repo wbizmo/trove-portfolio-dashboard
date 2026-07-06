@@ -18,18 +18,18 @@
 
 .menu {
   display: none;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--card);
   color: var(--text);
-  font-size: 18px;
+  padding: 0;
 }
 
 .search {
-  width: min(320px, 100%);
-  height: 40px;
+  width: min(340px, 100%);
+  height: 42px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--neutral-fill);
@@ -40,8 +40,12 @@
 }
 
 .searchIcon {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
   color: var(--primary);
-  font-size: 13px;
+  flex: 0 0 auto;
 }
 
 .search input {
@@ -59,26 +63,46 @@
   gap: 13px;
 }
 
+.iconButton,
+.profileIcon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-muted);
+}
+
 .iconButton {
-  width: 34px;
-  height: 34px;
   border: 0;
   background: transparent;
-  color: var(--text);
-  border-radius: 50%;
-  font-size: 18px;
+  padding: 0;
 }
 
 .profileIcon {
-  width: 30px;
-  height: 30px;
-  border: 1.5px solid var(--text-muted);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 800;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+}
+
+svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iconButton svg,
+.profileIcon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.menu svg {
+  width: 22px;
+  height: 22px;
 }
 
 @media (max-width: 860px) {
@@ -94,22 +118,4 @@
   .search {
     width: 100%;
   }
-}
-
-.searchIcon {
-  width: 18px;
-  height: 18px;
-  display: grid;
-  place-items: center;
-  color: var(--primary);
-  font-size: 18px;
-  line-height: 1;
-  font-weight: 800;
-}
-
-.iconButton {
-  display: grid;
-  place-items: center;
-  font-size: 22px;
-  line-height: 1;
 }
