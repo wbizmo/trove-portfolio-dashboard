@@ -1,0 +1,65 @@
+.page {
+  min-height: 100vh;
+  padding: 28px;
+  background: var(--page);
+}
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.kicker {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.logout {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  padding: 28px;
+}
+
+.muted {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 18px;
+  }
+
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
