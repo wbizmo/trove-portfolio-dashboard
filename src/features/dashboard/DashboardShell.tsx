@@ -5,6 +5,7 @@ import { TopBar } from "../../components/layout/TopBar";
 import { getDashboardData } from "../../services/portfolioService";
 import type { DashboardData } from "../../types/portfolio";
 import { formatCurrency, formatPercent } from "../../utils/formatters";
+import { HoldingsPanel } from "./components/HoldingsPanel";
 import styles from "./DashboardShell.module.css";
 
 export function DashboardShell() {
@@ -161,20 +162,14 @@ export function DashboardShell() {
           </section>
 
           <section className={styles.lowerGrid}>
-            <article className={styles.panel}>
-              <div className={styles.panelHead}>
-                <h2>Holdings</h2>
-                <button type="button">View All</button>
-              </div>
-              <p className={styles.placeholder}>Stocks tab comes in Sprint 3.6B.</p>
-            </article>
+            <HoldingsPanel holdings={dashboard.portfolio.holdings} />
 
             <article className={styles.panel}>
               <div className={styles.panelHead}>
                 <h2>Recent Transactions</h2>
                 <button type="button">View All</button>
               </div>
-              <p className={styles.placeholder}>Orders tab comes in Sprint 3.6B.</p>
+              <p className={styles.placeholder}>Orders cards come in Sprint 3.6B Part 2.</p>
             </article>
           </section>
         </div>
