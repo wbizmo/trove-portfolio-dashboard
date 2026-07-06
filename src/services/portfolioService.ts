@@ -28,10 +28,5 @@ export function getComputedPortfolioSummary(holdings: Holding[]) {
   const gainLoss = totalValue - totalInvested;
   const gainLossPercent = totalInvested > 0 ? (gainLoss / totalInvested) * 100 : 0;
 
-  return {
-    totalValue,
-    totalInvested,
-    gainLoss,
-    gainLossPercent,
-  };
+  return { totalValue, totalInvested, gainLoss, gainLossPercent };
 }

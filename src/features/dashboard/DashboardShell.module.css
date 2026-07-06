@@ -1,147 +1,307 @@
-.page {
+.app {
   min-height: 100vh;
-  padding: 28px;
+  display: grid;
+  grid-template-columns: 230px 1fr;
   background: var(--page);
 }
 
-.shell {
-  max-width: 1180px;
-  margin: 0 auto;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 28px;
-}
-
-.kicker {
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.title {
-  font-size: 30px;
-  line-height: 1.2;
-}
-
-.meta {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.logout,
-.balanceToggle {
-  border: 1px solid var(--border);
+.sidebar {
   background: var(--card);
-  border-radius: var(--radius-pill);
-  padding: 10px 16px;
-  color: var(--text);
+  border-right: 1px solid var(--border);
+  padding: 28px 20px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-weight: 800;
+  margin-bottom: 34px;
+}
+
+.nav {
+  display: grid;
+  gap: 8px;
+}
+
+.nav span {
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
   font-weight: 700;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1.4fr repeat(3, 1fr);
-  gap: 16px;
+.navActive {
+  background: var(--primary-light);
+  color: var(--primary) !important;
 }
 
-.card,
-.netWorthCard,
-.stateCard {
+.content {
+  padding: 28px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.greeting {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.meta {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search {
+  width: 240px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0 14px;
+}
+
+.search span {
+  display: none;
+}
+
+.search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.actions button,
+.cardTop button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.netCard,
+.allocationCard,
+.panel,
+.accountGrid article {
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  background: var(--card);
   box-shadow: var(--shadow-soft);
+}
+
+.netCard,
+.allocationCard {
   padding: 24px;
+  min-height: 210px;
 }
 
-.netWorthCard {
-  min-height: 190px;
-}
-
-.cardHeader {
+.cardTop,
+.panelHead {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+  align-items: center;
 }
 
-.label {
+.cardTop p {
+  margin: 0;
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 800;
-  margin-bottom: 10px;
 }
 
-.netWorth {
+.cardTop span {
+  color: var(--text-disabled);
+  font-size: 12px;
+}
+
+.netCard h2 {
+  margin: 28px 0 12px;
   font-size: 28px;
-  line-height: 1.1;
-  margin-bottom: 14px;
+  line-height: 1;
 }
 
-.metric {
-  display: block;
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-
-.positive {
+.good {
   color: var(--success);
-  font-weight: 800;
-  margin-bottom: 16px;
 }
 
-.negative {
+.bad {
   color: var(--danger);
-  font-weight: 800;
-  margin-bottom: 16px;
 }
 
-.muted {
+.note,
+.empty {
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.6;
 }
 
-.stateCard {
-  max-width: 520px;
-  margin: 80px auto;
+.barSkeleton {
+  display: flex;
+  overflow: hidden;
+  height: 18px;
+  border-radius: 999px;
+  margin: 42px 0 18px;
+  background: var(--neutral-fill);
+}
+
+.barSkeleton span:nth-child(1) {
+  width: 52%;
+  background: var(--primary);
+}
+
+.barSkeleton span:nth-child(2) {
+  width: 20%;
+  background: var(--purple);
+}
+
+.barSkeleton span:nth-child(3) {
+  width: 16%;
+  background: var(--blue);
+}
+
+.barSkeleton span:nth-child(4) {
+  width: 12%;
+  background: var(--cream);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.accountGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.accountGrid article {
+  padding: 18px;
+}
+
+.accountGrid span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.accountGrid strong {
+  font-size: 20px;
+}
+
+.lowerGrid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: 18px;
+}
+
+.panel {
+  padding: 22px;
+  min-height: 180px;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panelHead span {
+  color: var(--text-disabled);
+  font-size: 12px;
+}
+
+.statePage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--page);
   color: var(--text-muted);
 }
 
-@media (max-width: 960px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .netWorthCard {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 640px) {
-  .page {
-    padding: 18px;
-  }
-
-  .header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .grid {
+@media (max-width: 980px) {
+  .app {
     grid-template-columns: 1fr;
   }
 
-  .title {
-    font-size: 25px;
+  .sidebar {
+    display: none;
+  }
+
+  .heroGrid,
+  .lowerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .accountGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .topbar {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .content {
+    padding: 18px;
+  }
+
+  .actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .accountGrid {
+    grid-template-columns: 1fr;
   }
 }
