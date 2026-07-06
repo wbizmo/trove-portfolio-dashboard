@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { Transaction, TransactionType } from "../../../types/portfolio";
 import { formatCurrency, formatDate } from "../../../utils/formatters";
@@ -34,10 +34,6 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
     page * ITEMS_PER_PAGE,
   );
 
-  useEffect(() => {
-    setPage(1);
-  }, [filter]);
-
   return (
     <article className={styles.panel}>
       <div className={styles.head}>
@@ -53,7 +49,7 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
             key={item}
             className={`${styles.filter} ${item === filter ? styles.activeFilter : ""}`}
             type="button"
-            onClick={() => setFilter(item)}
+            onClick={() => { setFilter(item); setPage(1); }}
           >
             {item === "All" ? "All" : item === "BUY" ? "Buy" : "Sell"}
           </button>

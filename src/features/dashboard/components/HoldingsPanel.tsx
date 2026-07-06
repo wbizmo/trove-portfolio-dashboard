@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { getHoldingValue, getInvestedValue } from "../../../services/portfolioService";
 import type { Holding } from "../../../types/portfolio";
@@ -56,10 +56,6 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
     page * ITEMS_PER_PAGE,
   );
 
-  useEffect(() => {
-    setPage(1);
-  }, [query, sector]);
-
   return (
     <article className={styles.panel}>
       <div className={styles.head}>
@@ -81,7 +77,7 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
             type="search"
             placeholder="Search by ticker or company"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => { setQuery(event.target.value); setPage(1); }}
           />
         </label>
 
@@ -91,7 +87,7 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
               key={item}
               className={`${styles.filter} ${item === sector ? styles.activeFilter : ""}`}
               type="button"
-              onClick={() => setSector(item)}
+              onClick={() => { setSector(item); setPage(1); }}
             >
               {item}
             </button>
