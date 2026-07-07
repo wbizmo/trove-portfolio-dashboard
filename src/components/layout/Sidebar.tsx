@@ -1,7 +1,75 @@
 import { useAuth } from "../../context/useAuth";
 import styles from "./Sidebar.module.css";
 
-const navItems = ["Dashboard", "Portfolio", "Transactions", "Markets", "Settings"];
+type NavItem = {
+  label: string;
+  icon: "dashboard" | "portfolio" | "transactions" | "markets" | "settings";
+};
+
+const navItems: NavItem[] = [
+  { label: "Dashboard", icon: "dashboard" },
+  { label: "Portfolio", icon: "portfolio" },
+  { label: "Transactions", icon: "transactions" },
+  { label: "Markets", icon: "markets" },
+  { label: "Settings", icon: "settings" },
+];
+
+function NavIcon({ name }: { name: NavItem["icon"] }) {
+  if (name === "dashboard") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 5h7v6H4z" />
+        <path d="M13 5h7v4h-7z" />
+        <path d="M13 11h7v8h-7z" />
+        <path d="M4 13h7v6H4z" />
+      </svg>
+    );
+  }
+
+  if (name === "portfolio") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 8h14v11H5z" />
+        <path d="M9 8V6h6v2" />
+        <path d="M8 13h8" />
+      </svg>
+    );
+  }
+
+  if (name === "transactions") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 7h10" />
+        <path d="M14 4l3 3-3 3" />
+        <path d="M17 17H7" />
+        <path d="M10 14l-3 3 3 3" />
+      </svg>
+    );
+  }
+
+  if (name === "markets") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 17l5-5 4 4 7-8" />
+        <path d="M15 8h5v5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 8a4 4 0 100 8 4 4 0 000-8z" />
+      <path d="M12 3v3" />
+      <path d="M12 18v3" />
+      <path d="M3 12h3" />
+      <path d="M18 12h3" />
+      <path d="M5.6 5.6l2.1 2.1" />
+      <path d="M16.3 16.3l2.1 2.1" />
+      <path d="M18.4 5.6l-2.1 2.1" />
+      <path d="M7.7 16.3l-2.1 2.1" />
+    </svg>
+  );
+}
 
 type SidebarProps = {
   isOpen: boolean;
@@ -31,12 +99,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       <nav className={styles.nav} aria-label="Main navigation">
         {navItems.map((item) => (
           <button
-            key={item}
-            className={`${styles.navItem} ${item === "Dashboard" ? styles.active : ""}`}
+            key={item.label}
+            className={`${styles.navItem} ${item.label === "Dashboard" ? styles.active : ""}`}
             type="button"
           >
-            <span className={styles.icon}>{item.slice(0, 1)}</span>
-            {item}
+            <span className={styles.icon}>
+              <NavIcon name={item.icon} />
+            </span>
+            {item.label}
           </button>
         ))}
       </nav>
