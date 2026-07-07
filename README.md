@@ -183,6 +183,14 @@ This ensures the dashboard remains accurate even if the underlying holdings chan
 
 ---
 
+### Consistent Summary Calculations
+
+The headline portfolio value and percentage change use the same validity rules as the allocation calculation.
+
+Holdings with unavailable market prices or no active shares are excluded from both current value and invested value calculations. This prevents unavailable data from being treated as a realised loss and keeps the headline performance consistent with the allocation disclosure.
+
+---
+
 ### Portfolio Trend
 
 The portfolio trend line is intentionally illustrative rather than data-driven.
