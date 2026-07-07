@@ -9,30 +9,6 @@ import { HoldingsPanel } from "./components/HoldingsPanel";
 import { TransactionsPanel } from "./components/TransactionsPanel";
 import styles from "./DashboardShell.module.css";
 
-type StateCardProps = {
-  title: string;
-  message: string;
-  actionLabel?: string;
-  onAction?: () => void;
-};
-
-function StateCard({ title, message, actionLabel, onAction }: StateCardProps) {
-  return (
-    <main className={styles.statePage}>
-      <section className={styles.stateCard}>
-        <div className={styles.stateLogo}>T</div>
-        <h1>{title}</h1>
-        <p>{message}</p>
-        {actionLabel && onAction ? (
-          <button type="button" onClick={onAction}>
-            {actionLabel}
-          </button>
-        ) : null}
-      </section>
-    </main>
-  );
-}
-
 export function DashboardShell() {
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
