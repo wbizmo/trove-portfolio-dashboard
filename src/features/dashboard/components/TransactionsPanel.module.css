@@ -237,3 +237,27 @@
 .pagination button:disabled {
   opacity: 0.45;
 }
+
+.panel {
+  border-radius: 16px;
+}
+
+.viewAll:hover,
+.filter:hover,
+.pagination button:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.order:hover {
+  border-color: rgba(5, 154, 131, 0.35);
+  box-shadow: 0 10px 26px rgba(19, 52, 47, 0.08);
+}
+
+.pagination button {
+  min-width: 62px;
+}
+
+.pagination button:disabled {
+  background: var(--neutral-fill);
+}

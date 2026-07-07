@@ -36,3 +36,26 @@ a {
 #root {
   min-height: 100vh;
 }
+
+:focus-visible {
+  outline: 3px solid rgba(5, 154, 131, 0.22);
+  outline-offset: 3px;
+}
+
+button,
+input {
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+input::placeholder {
+  color: var(--text-disabled);
+}

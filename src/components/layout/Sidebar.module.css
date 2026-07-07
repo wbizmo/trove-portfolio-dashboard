@@ -156,3 +156,35 @@
     flex: 0 0 180px;
   }
 }
+
+.navItem:hover {
+  background: var(--neutral-fill);
+  color: var(--text);
+}
+
+.active:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.addButton:hover {
+  box-shadow: 0 10px 24px rgba(5, 154, 131, 0.24);
+}
+
+.closeButton:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+@media (min-width: 861px) {
+  .sidebar {
+    width: 192px;
+    flex-basis: 192px;
+  }
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    width: 236px;
+  }
+}
