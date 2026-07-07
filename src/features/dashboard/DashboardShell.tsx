@@ -102,6 +102,8 @@ export function DashboardShell() {
                   </defs>
                   <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28" fill="none" stroke="#059A83" strokeWidth="4" />
                   <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28 L520 170 L0 170 Z" fill="url(#chartFill)" />
+                  <circle cx="520" cy="28" r="10" fill="#059A83" opacity="0.22"/>
+                  <circle cx="520" cy="28" r="5.5" fill="#059A83" stroke="#ffffff" strokeWidth="2"/>
                 </svg>
               </div>
             </article>
