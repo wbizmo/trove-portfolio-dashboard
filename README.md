@@ -42,6 +42,23 @@ Linting was treated as part of the engineering workflow rather than an optional 
 
 ---
 
+## Demo Login
+
+This project uses simulated authentication because the assessment does not require a real backend or real user accounts.
+
+You can log in with:
+
+- Any valid email address
+- Any password with at least 6 characters
+
+Example:
+
+```text
+Email: demo@trove.com
+Password: trove123
+
+---
+
 # Approach & Architectural Decisions
 
 The application was intentionally kept simple while still following production-oriented engineering practices.
@@ -171,6 +188,16 @@ This ensures the dashboard remains accurate even if the underlying holdings chan
 React Context manages authentication state.
 
 A larger state management library such as Redux would introduce unnecessary complexity for the requirements of this assessment.
+
+---
+
+### Simulated Login Rules
+
+The login accepts any valid email and any password with at least 6 characters.
+
+This was intentional because the assessment asks for simulated authentication, not real authentication. The goal was to demonstrate form validation, loading state, auth state management and navigation into the dashboard without introducing fake credentials or hardcoded user accounts.
+
+A real production application would validate credentials through a backend authentication service. For this assessment, keeping the login generic makes the demo easier to review while still showing the expected login behaviour.
 
 ---
 
