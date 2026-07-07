@@ -1,5 +1,4 @@
 import portfolioData from "../assets/data/portfolio_data.json";
-import { transactionsMock } from "../assets/data/transactionsMock";
 import type {
   DashboardData,
   ExcludedHolding,
@@ -23,16 +22,11 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 export async function getDashboardData(): Promise<DashboardData> {
   const portfolio = await getPortfolioData();
 
-  const dashboardPortfolio = {
-    ...portfolio,
-    transactions: transactionsMock,
-  };
-
   return {
-    portfolio: dashboardPortfolio,
-    computedSummary: getComputedPortfolioSummary(dashboardPortfolio.holdings),
-    allocation: getSectorAllocations(dashboardPortfolio.holdings),
-    excludedHoldings: getExcludedHoldings(dashboardPortfolio.holdings),
+    portfolio,
+    computedSummary: getComputedPortfolioSummary(portfolio.holdings),
+    allocation: getSectorAllocations(portfolio.holdings),
+    excludedHoldings: getExcludedHoldings(portfolio.holdings),
   };
 }
 
