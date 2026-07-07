@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Sidebar } from "../../components/layout/Sidebar";
 import { TopBar } from "../../components/layout/TopBar";
@@ -63,23 +63,11 @@ export function DashboardShell() {
   }, [loadDashboard]);
 
   if (isLoading) {
-    return (
-      <StateCard
-        title="Loading portfolio"
-        message="Preparing your portfolio dashboard..."
-      />
-    );
+    return <main className={styles.statePage}>Loading portfolio...</main>;
   }
 
   if (error || !dashboard) {
-    return (
-      <StateCard
-        title="Portfolio unavailable"
-        message={error || "The portfolio data could not be prepared."}
-        actionLabel="Try again"
-        onAction={loadDashboard}
-      />
-    );
+    return <main className={styles.statePage}>{error || "Portfolio unavailable."}</main>;
   }
 
   const { computedSummary, allocation, excludedHoldings } = dashboard;
