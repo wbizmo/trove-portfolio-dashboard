@@ -39,18 +39,18 @@ export function DashboardShell() {
   }, [loadDashboard]);
 
   if (isLoading) {
-    return <main className={styles.statePage}>Loading portfolio...</main>;
+    return <main className={styles.statePage} aria-live="polite">Loading portfolio...</main>;
   }
 
   if (error || !dashboard) {
-    return <main className={styles.statePage}>{error || "Portfolio unavailable."}</main>;
+    return <main className={styles.statePage} role="alert">{error || "Portfolio unavailable."}</main>;
   }
 
   const { computedSummary, allocation, excludedHoldings } = dashboard;
   const gainClass = computedSummary.gainLoss >= 0 ? styles.positive : styles.negative;
 
   return (
-    <main className={styles.app}>
+    <main className={styles.app} aria-label="Trove portfolio dashboard">
       <Sidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       {menuOpen ? (
@@ -74,10 +74,10 @@ export function DashboardShell() {
                 </p>
 
                 <div className={styles.range}>
-                  <button className={styles.rangeActive} type="button">1D</button>
-                  <button type="button">1W</button>
-                  <button type="button">1M</button>
-                  <button type="button">ALL</button>
+                  <button className={styles.rangeActive} type="button" aria-pressed="true">1D</button>
+                  <button type="button" aria-pressed="false">1W</button>
+                  <button type="button" aria-pressed="false">1M</button>
+                  <button type="button" aria-pressed="false">ALL</button>
                 </div>
               </div>
 
@@ -87,6 +87,7 @@ export function DashboardShell() {
                 <button
                   className={styles.hideButton}
                   type="button"
+                  aria-label={showBalance ? "Hide portfolio balance" : "Show portfolio balance"}
                   onClick={() => setShowBalance((current) => !current)}
                 >
                   {showBalance ? "Hide" : "Show"}
@@ -112,7 +113,7 @@ export function DashboardShell() {
 
               {allocation.length > 0 ? (
                 <>
-                  <div className={styles.allocationBar}>
+                  <div className={styles.allocationBar} role="img" aria-label="Portfolio allocation by sector">
                     {allocation.map((item, index) => (
                       <span
                         key={item.sector}
@@ -139,13 +140,13 @@ export function DashboardShell() {
 
               {excludedHoldings.length > 0 ? (
                 <div className={styles.exclusionBox}>
-                  <button type="button" onClick={() => setShowExcluded((current) => !current)}>
+                  <button type="button" aria-expanded={showExcluded} aria-controls="excluded-holdings" onClick={() => setShowExcluded((current) => !current)}>
                     {excludedHoldings.length} excluded from allocation
                     <span>{showExcluded ? "Hide" : "View"}</span>
                   </button>
 
                   {showExcluded ? (
-                    <ul>
+                    <ul id="excluded-holdings">
                       {excludedHoldings.map((holding) => (
                         <li key={holding.id}>
                           <strong>{holding.ticker}</strong>

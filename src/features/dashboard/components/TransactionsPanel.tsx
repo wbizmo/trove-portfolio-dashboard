@@ -35,9 +35,9 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
   );
 
   return (
-    <article className={styles.panel}>
+    <article className={styles.panel} aria-labelledby="transactions-heading">
       <div className={styles.head}>
-        <h2>Recent Transactions</h2>
+        <h2 id="transactions-heading">Recent Transactions</h2>
         <button className={styles.viewAll} type="button">
           View All
         </button>
@@ -49,6 +49,7 @@ export function TransactionsPanel({ transactions }: TransactionsPanelProps) {
             key={item}
             className={`${styles.filter} ${item === filter ? styles.activeFilter : ""}`}
             type="button"
+            aria-pressed={item === filter}
             onClick={() => { setFilter(item); setPage(1); }}
           >
             {item === "All" ? "All" : item === "BUY" ? "Buy" : "Sell"}

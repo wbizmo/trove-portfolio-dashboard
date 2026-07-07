@@ -57,9 +57,9 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
   );
 
   return (
-    <article className={styles.panel}>
+    <article className={styles.panel} aria-labelledby="holdings-heading">
       <div className={styles.head}>
-        <h2>Holdings</h2>
+        <h2 id="holdings-heading">Holdings</h2>
 
         <div className={styles.tabs}>
           <button className={`${styles.tab} ${styles.activeTab}`} type="button">
@@ -74,6 +74,7 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
       <div className={styles.controls}>
         <label className={styles.search}>
           <input
+            aria-label="Search holdings"
             type="search"
             placeholder="Search by ticker or company"
             value={query}
@@ -87,6 +88,7 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
               key={item}
               className={`${styles.filter} ${item === sector ? styles.activeFilter : ""}`}
               type="button"
+              aria-pressed={item === sector}
               onClick={() => { setSector(item); setPage(1); }}
             >
               {item}
