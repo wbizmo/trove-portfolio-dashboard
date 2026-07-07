@@ -135,3 +135,14 @@ svg {
   background: var(--neutral-fill);
   color: var(--primary);
 }
+
+@media (max-width: 860px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(251, 251, 251, 0.96);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+}

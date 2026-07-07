@@ -267,6 +267,14 @@ On smaller screens the sidebar becomes a slide-out drawer, improving usability w
 
 ---
 
+### Sticky Mobile Header
+
+The mobile dashboard header is sticky so users can access search, notifications, profile controls and the menu drawer without scrolling back to the top of the page.
+
+This improves mobile usability while leaving the desktop layout unchanged.
+
+---
+
 ### Sidebar Sign Out
 
 Sign out is placed in the sidebar bottom section instead of the top bar profile icon.
