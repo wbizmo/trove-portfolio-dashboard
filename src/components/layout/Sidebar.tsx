@@ -50,6 +50,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </span>
         </div>
 
+        <button className={styles.signOutButton} type="button" onClick={logout}>
+          Sign out
+        </button>
+
         <button className={styles.addButton} type="button">
           Add Funds
         </button>
