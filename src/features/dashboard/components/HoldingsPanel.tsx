@@ -61,14 +61,13 @@ export function HoldingsPanel({ holdings }: HoldingsPanelProps) {
       <div className={styles.head}>
         <h2 id="holdings-heading">Holdings</h2>
 
-        <div className={styles.tabs}>
-          <button className={`${styles.tab} ${styles.activeTab}`} type="button">
-            Stocks
-          </button>
-          <button className={styles.tab} type="button">
-            Orders
-          </button>
-        </div>
+        <button
+          className={styles.viewAll}
+          type="button"
+          aria-label="View all holdings"
+        >
+          View All
+        </button>
       </div>
 
       <div className={styles.controls}>

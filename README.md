@@ -183,6 +183,24 @@ This ensures the dashboard remains accurate even if the underlying holdings chan
 
 ---
 
+### Portfolio Trend
+
+The portfolio trend line is intentionally illustrative rather than data-driven.
+
+The assessment dataset provides a snapshot of the current portfolio but does not include historical portfolio values or time-series market data required to render a true performance chart. Rather than fabricate historical data, the application uses a static visual trend while ensuring all displayed portfolio metrics are derived from the supplied dataset.
+
+---
+
+### Portfolio Performance Percentage
+
+The portfolio percentage change is calculated from each holding's average purchase price (`avgCost`) and current market price (`currentPrice`).
+
+Although the interface includes 1D, 1W, 1M and ALL time-range controls, the supplied dataset contains no historical market prices or daily performance data. As a result, the displayed percentage represents unrealised portfolio performance relative to acquisition cost rather than time-based market movement.
+
+This approach ensures every reported metric is derived from available data instead of relying on fabricated values.
+
+---
+
 ### React Context
 
 React Context manages authentication state.
