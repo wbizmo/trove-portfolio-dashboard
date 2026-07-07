@@ -451,3 +451,52 @@
     padding: 18px;
   }
 }
+
+.stateCard {
+  width: min(100%, 360px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 28px;
+  text-align: center;
+}
+
+.stateLogo {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: white;
+  font-weight: 900;
+}
+
+.stateCard h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+}
+
+.stateCard p,
+.emptyState {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.stateCard button {
+  margin-top: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  padding: 10px 16px;
+  font-weight: 800;
+}
+
+.emptyState {
+  margin: 24px 0 0;
+}

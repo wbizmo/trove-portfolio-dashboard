@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Sidebar } from "../../components/layout/Sidebar";
 import { TopBar } from "../../components/layout/TopBar";
@@ -9,6 +9,30 @@ import { HoldingsPanel } from "./components/HoldingsPanel";
 import { TransactionsPanel } from "./components/TransactionsPanel";
 import styles from "./DashboardShell.module.css";
 
+type StateCardProps = {
+  title: string;
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
+};
+
+function StateCard({ title, message, actionLabel, onAction }: StateCardProps) {
+  return (
+    <main className={styles.statePage}>
+      <section className={styles.stateCard}>
+        <div className={styles.stateLogo}>T</div>
+        <h1>{title}</h1>
+        <p>{message}</p>
+        {actionLabel && onAction ? (
+          <button type="button" onClick={onAction}>
+            {actionLabel}
+          </button>
+        ) : null}
+      </section>
+    </main>
+  );
+}
+
 export function DashboardShell() {
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,35 +41,43 @@ export function DashboardShell() {
   const [showExcluded, setShowExcluded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
+  const loadDashboard = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError("");
 
-    async function loadDashboard() {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const data = await getDashboardData();
-
-        if (isMounted) setDashboard(data);
-      } catch {
-        if (isMounted) setError("Unable to load portfolio data.");
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
+      const data = await getDashboardData();
+      setDashboard(data);
+    } catch {
+      setError("Unable to load portfolio data.");
+      setDashboard(null);
+    } finally {
+      setIsLoading(false);
     }
-
-    loadDashboard();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
-  if (isLoading) return <main className={styles.statePage}>Loading portfolio...</main>;
+  useEffect(() => {
+    void loadDashboard();
+  }, [loadDashboard]);
+
+  if (isLoading) {
+    return (
+      <StateCard
+        title="Loading portfolio"
+        message="Preparing your portfolio dashboard..."
+      />
+    );
+  }
 
   if (error || !dashboard) {
-    return <main className={styles.statePage}>{error || "Portfolio unavailable."}</main>;
+    return (
+      <StateCard
+        title="Portfolio unavailable"
+        message={error || "The portfolio data could not be prepared."}
+        actionLabel="Try again"
+        onAction={loadDashboard}
+      />
+    );
   }
 
   const { computedSummary, allocation, excludedHoldings } = dashboard;
@@ -53,7 +85,7 @@ export function DashboardShell() {
 
   return (
     <main className={styles.app}>
-      <div onClick={() => setMenuOpen(false)}>        <Sidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />      </div>
+      <Sidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       {menuOpen ? (
         <button
@@ -71,7 +103,10 @@ export function DashboardShell() {
           <section className={styles.topGrid}>
             <article className={styles.netWorthCard}>
               <div className={styles.cardTop}>
-                <p>Total Net Worth <span className={styles.infoIcon}>i</span></p>
+                <p>
+                  Total Net Worth <span className={styles.infoIcon}>i</span>
+                </p>
+
                 <div className={styles.range}>
                   <button className={styles.rangeActive} type="button">1D</button>
                   <button type="button">1W</button>
@@ -102,7 +137,6 @@ export function DashboardShell() {
                   </defs>
                   <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28" fill="none" stroke="#059A83" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28 L520 170 L0 170 Z" fill="url(#chartFill)" />
-                  
                 </svg>
               </div>
             </article>
@@ -110,26 +144,32 @@ export function DashboardShell() {
             <article className={styles.allocationCard}>
               <h2>Asset Allocation</h2>
 
-              <div className={styles.allocationBar}>
-                {allocation.map((item, index) => (
-                  <span
-                    key={item.sector}
-                    className={styles[`segment${index + 1}`]}
-                    style={{ width: `${item.percentage}%` }}
-                    title={`${item.sector}: ${item.percentage.toFixed(1)}%`}
-                  />
-                ))}
-              </div>
+              {allocation.length > 0 ? (
+                <>
+                  <div className={styles.allocationBar}>
+                    {allocation.map((item, index) => (
+                      <span
+                        key={item.sector}
+                        className={styles[`segment${index + 1}`]}
+                        style={{ width: `${item.percentage}%` }}
+                        title={`${item.sector}: ${item.percentage.toFixed(1)}%`}
+                      />
+                    ))}
+                  </div>
 
-              <div className={styles.legend}>
-                {allocation.map((item, index) => (
-                  <span key={item.sector}>
-                    <i className={styles[`dot${index + 1}`]} />
-                    <b>{item.sector}</b>
-                    <strong>{item.percentage.toFixed(1)}%</strong>
-                  </span>
-                ))}
-              </div>
+                  <div className={styles.legend}>
+                    {allocation.map((item, index) => (
+                      <span key={item.sector}>
+                        <i className={styles[`dot${index + 1}`]} />
+                        <b>{item.sector}</b>
+                        <strong>{item.percentage.toFixed(1)}%</strong>
+                      </span>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className={styles.emptyState}>No valid allocation data is available.</p>
+              )}
 
               {excludedHoldings.length > 0 ? (
                 <div className={styles.exclusionBox}>
@@ -165,7 +205,6 @@ export function DashboardShell() {
 
           <section className={styles.lowerGrid}>
             <HoldingsPanel holdings={dashboard.portfolio.holdings} />
-
             <TransactionsPanel transactions={dashboard.portfolio.transactions} />
           </section>
         </div>
