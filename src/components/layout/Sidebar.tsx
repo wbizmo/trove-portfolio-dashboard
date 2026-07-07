@@ -42,6 +42,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       </nav>
 
       <div className={styles.bottom}>
+        <button
+          className={styles.signOutButton}
+          type="button"
+          onClick={logout}
+        >
+          Sign out
+        </button>
+
         <div className={styles.profile}>
           <span className={styles.avatar}>AO</span>
           <span>
@@ -49,10 +57,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <span className={styles.role}>Premium Member</span>
           </span>
         </div>
-
-        <button className={styles.signOutButton} type="button" onClick={logout}>
-          Sign out
-        </button>
 
         <button className={styles.addButton} type="button">
           Add Funds

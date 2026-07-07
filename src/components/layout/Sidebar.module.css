@@ -223,3 +223,20 @@
   background: rgba(191, 34, 28, 0.06);
   border-color: rgba(191, 34, 28, 0.32);
 }
+
+.signOutButton {
+  width: 100%;
+  margin-bottom: 16px;
+  border: 1px solid rgba(191,34,28,.18);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--danger);
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.signOutButton:hover {
+  background: rgba(191,34,28,.06);
+}
