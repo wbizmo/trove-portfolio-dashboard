@@ -36,7 +36,7 @@ export function getHoldingValue(holding: Holding) {
 }
 
 export function getInvestedValue(holding: Holding) {
-  if (holding.shares <= 0) return 0;
+  if (holding.shares <= 0 || holding.currentPrice <= 0) return 0;
   return holding.shares * holding.avgCost;
 }
 
