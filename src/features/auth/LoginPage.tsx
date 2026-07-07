@@ -3,13 +3,9 @@ import { useState } from "react";
 import { useAuth } from "../../context/useAuth";
 import styles from "./LoginPage.module.css";
 
-const DEMO_EMAIL = "demo@trove.com";
-const DEMO_PASSWORD = "trove123";
-
 type LoginErrors = {
   email?: string;
   password?: string;
-  form?: string;
 };
 
 function isValidEmail(email: string) {
@@ -19,8 +15,8 @@ function isValidEmail(email: string) {
 export function LoginPage() {
   const { login } = useAuth();
 
-  const [email, setEmail] = useState(DEMO_EMAIL);
-  const [password, setPassword] = useState(DEMO_PASSWORD);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,14 +35,6 @@ export function LoginPage() {
       nextErrors.password = "Password is required.";
     } else if (password.length < 6) {
       nextErrors.password = "Password must be at least 6 characters.";
-    }
-
-    if (
-      cleanEmail &&
-      password &&
-      (cleanEmail !== DEMO_EMAIL || password !== DEMO_PASSWORD)
-    ) {
-      nextErrors.form = "Use the demo credentials provided below.";
     }
 
     setErrors(nextErrors);
@@ -108,12 +96,8 @@ export function LoginPage() {
                 ◉
               </button>
             </span>
-            {errors.password ? (
-              <span className={styles.error}>{errors.password}</span>
-            ) : null}
+            {errors.password ? <span className={styles.error}>{errors.password}</span> : null}
           </label>
-
-          {errors.form ? <p className={styles.error}>{errors.form}</p> : null}
 
           <button className={styles.button} type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Signing in..." : "Sign in"}
@@ -133,10 +117,6 @@ export function LoginPage() {
         <button className={styles.secondaryButton} type="button">
           Create a Trove account
         </button>
-
-        <p className={styles.demo}>
-          Demo: <strong>{DEMO_EMAIL}</strong> / <strong>{DEMO_PASSWORD}</strong>
-        </p>
       </section>
     </main>
   );
