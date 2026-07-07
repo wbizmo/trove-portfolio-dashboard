@@ -93,17 +93,33 @@ export function DashboardShell() {
               </div>
 
               <div className={styles.fakeChart} aria-hidden="true">
-                <svg viewBox="0 0 520 170" preserveAspectRatio="none">
+                <svg viewBox="0 0 540 170" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
                       <stop offset="0%" stopColor="#059A83" stopOpacity="0.24" />
                       <stop offset="100%" stopColor="#059A83" stopOpacity="0" />
                     </linearGradient>
                   </defs>
-                  <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28" fill="none" stroke="#059A83" strokeWidth="4" />
+                  <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28" fill="none" stroke="#059A83" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+
+<circle
+  cx="516"
+  cy="28"
+  r="10"
+  fill="#059A83"
+  fillOpacity="0.18"
+/>
+
+<circle
+  cx="516"
+  cy="28"
+  r="5"
+  fill="#059A83"
+  stroke="#ffffff"
+  strokeWidth="3"
+/>
                   <path d="M0 120 C80 105 130 130 200 105 C285 72 310 10 390 58 C455 95 468 132 520 28 L520 170 L0 170 Z" fill="url(#chartFill)" />
-                  <circle cx="520" cy="28" r="10" fill="#059A83" opacity="0.22"/>
-                  <circle cx="520" cy="28" r="5.5" fill="#059A83" stroke="#ffffff" strokeWidth="2"/>
+                  
                 </svg>
               </div>
             </article>
