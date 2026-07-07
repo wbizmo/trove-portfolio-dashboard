@@ -240,3 +240,9 @@
 .signOutButton:hover {
   background: rgba(191,34,28,.06);
 }
+
+@media (max-width: 860px) {
+  .sidebar {
+    z-index: 80;
+  }
+}

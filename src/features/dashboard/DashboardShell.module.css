@@ -500,3 +500,9 @@
 .emptyState {
   margin: 24px 0 0;
 }
+
+@media (max-width: 860px) {
+  .scrim {
+    z-index: 70;
+  }
+}
