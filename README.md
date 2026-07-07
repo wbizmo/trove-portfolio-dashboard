@@ -299,6 +299,14 @@ Nested scrolling often creates a poor user experience, whereas pagination keeps 
 
 ---
 
+### Stocks and Orders Layout
+
+The assessment describes Stocks and Orders as tabs. In this implementation, both sections are displayed as side-by-side dashboard panels on larger screens so users can review holdings and recent orders at the same time.
+
+This keeps the desktop dashboard more scannable while still preserving the intended separation between holdings and transactions. On smaller screens, the responsive layout stacks the sections vertically to remain usable without horizontal scrolling.
+
+---
+
 ### Five Items Per Page
 
 Five items are displayed per page for both Holdings and Orders.
