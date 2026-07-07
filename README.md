@@ -56,6 +56,7 @@ Example:
 ```text
 Email: demo@trove.com
 Password: trove123
+```
 
 ---
 
