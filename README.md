@@ -267,6 +267,14 @@ On smaller screens the sidebar becomes a slide-out drawer, improving usability w
 
 ---
 
+### Sidebar Sign Out
+
+Sign out is placed in the sidebar bottom section instead of the top bar profile icon.
+
+This keeps the action available on both desktop and mobile because the sidebar becomes the mobile drawer. It also separates session actions from page navigation. The button is styled as a secondary danger action rather than a normal menu item, making it clear that it affects the current session instead of navigating to another dashboard section.
+
+---
+
 ### Pagination Instead of Nested Scrollbars
 
 Holdings and Orders use pagination instead of internal scrollbars.

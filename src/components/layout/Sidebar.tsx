@@ -1,3 +1,4 @@
+import { useAuth } from "../../context/useAuth";
 import styles from "./Sidebar.module.css";
 
 const navItems = ["Dashboard", "Portfolio", "Transactions", "Markets", "Settings"];
@@ -17,6 +18,7 @@ function CloseIcon() {
 }
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const { logout } = useAuth();
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
       <div className={styles.sidebarHeader}>
