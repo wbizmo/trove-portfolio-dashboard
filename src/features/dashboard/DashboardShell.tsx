@@ -57,7 +57,9 @@ export function DashboardShell() {
   }, []);
 
   useEffect(() => {
-    void loadDashboard();
+    window.setTimeout(() => {
+      void loadDashboard();
+    }, 0);
   }, [loadDashboard]);
 
   if (isLoading) {
